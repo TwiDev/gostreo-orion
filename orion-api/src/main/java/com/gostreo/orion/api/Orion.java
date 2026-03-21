@@ -1,0 +1,48 @@
+package com.gostreo.orion.api;
+
+import com.gostreo.orion.api.configs.OrchestratorConfig;
+
+import java.io.Closeable;
+import java.io.IOException;
+
+public abstract class Orion<Parent extends Orchestrator> implements Closeable {
+
+    private final Object closeLock = new Object();
+    private boolean closed = false;
+
+    public abstract void helloworld();
+
+    @Override
+    public synchronized void close() throws IOException {
+        synchronized (closeLock) {
+            closed = true;
+        }
+    }
+
+    public boolean isClosed() {
+        synchronized (closeLock) {
+            return closed;
+        }
+    }
+
+    public static final class Builder<Parent extends Orchestrator>  {
+
+        private final Parent parent;
+        private final OrchestratorConfig<Parent> config;
+        private final OrionProvider<Parent> orion;
+
+        public Builder(OrionProvider<Parent> provider, OrchestratorConfig<Parent> config) {
+            this.parent = provider.getParent();
+            this.config = config;
+            this.orion = provider;
+        }
+
+        public Builder<Parent> limit(int limit) {
+            return this;
+        }
+
+        public Orion<Parent> build() {
+            return orion.build(this);
+        }
+    }
+}
