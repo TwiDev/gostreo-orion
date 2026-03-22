@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.gostreo</groupId>
-        <artifactId>helios-parent</artifactId>
+        <artifactId>orion-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>orion-core</artifactId>
-    <name>Helios Core</name>
+    <name>orion Core</name>
     <version>${global.version}</version>
 
     <properties>
@@ -18,5 +18,13 @@
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.gostreo</groupId>
+            <artifactId>orion-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

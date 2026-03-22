@@ -1,6 +1,8 @@
 package com.gostreo.orion.api;
 
 import com.gostreo.orion.api.configs.OrchestratorConfig;
+import com.gostreo.orion.api.repository.OrionRepository;
+import com.gostreo.orion.api.repository.OrionRepositoryProvider;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -11,6 +13,8 @@ public abstract class Orion<Parent extends Orchestrator> implements Closeable {
     private boolean closed = false;
 
     public abstract void helloworld();
+
+    public abstract <Provider extends OrionRepository<Parent>> OrionRepositoryProvider<Parent, Provider> getRepositoryProvider(Class<Provider> repositoryClass);
 
     @Override
     public synchronized void close() throws IOException {
@@ -35,6 +39,10 @@ public abstract class Orion<Parent extends Orchestrator> implements Closeable {
             this.parent = provider.getParent();
             this.config = config;
             this.orion = provider;
+        }
+
+        public Builder<Parent> withRepository(Class<? extends OrionRepository<Parent>> parent) {
+            return this;
         }
 
         public Builder<Parent> limit(int limit) {

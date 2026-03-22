@@ -5,6 +5,8 @@
     <file url="file://$PROJECT_DIR$/orion-api/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/orion-app/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/orion-app/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/orion-bridge/orion-kafka-bridge/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/orion-bridge/orion-kafka-bridge/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/orion-bridge/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/orion-bridge/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/orion-core/src/main/java" charset="UTF-8" />
