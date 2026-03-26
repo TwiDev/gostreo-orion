@@ -6,9 +6,11 @@ import com.gostreo.orion.api.repository.OrionRepositoryProvider;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.UUID;
 
 public abstract class Orion<Parent extends Orchestrator> implements Closeable {
 
+    private final UUID instanceId = UUID.randomUUID();
     private final Object closeLock = new Object();
     private boolean closed = false;
 
@@ -27,6 +29,10 @@ public abstract class Orion<Parent extends Orchestrator> implements Closeable {
         synchronized (closeLock) {
             return closed;
         }
+    }
+
+    public UUID getId() {
+        return instanceId;
     }
 
     public static final class Builder<Parent extends Orchestrator>  {

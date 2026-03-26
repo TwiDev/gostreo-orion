@@ -13,6 +13,7 @@
         <module>orion-api</module>
         <module>orion-tests</module>
         <module>orion-app</module>
+        <module>orion-common</module>
     </modules>
     <version>1.0.0-SNAPSHOT</version>
 

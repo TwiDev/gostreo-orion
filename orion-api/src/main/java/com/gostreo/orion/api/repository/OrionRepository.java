@@ -8,6 +8,8 @@ import com.gostreo.orion.api.Orion;
  */
 public interface OrionRepository<Parent extends Orchestrator> {
 
+    Parent getOrchestrator();
+
     class Builder<Parent extends Orchestrator, Provider extends OrionRepository<Parent>> {
 
         private final Orion<Parent> orion;
@@ -19,7 +21,8 @@ public interface OrionRepository<Parent extends Orchestrator> {
         }
 
         public Provider build() {
-            return orion.getRepositoryProvider(repositoryClass).build();
+            return orion.getRepositoryProvider(repositoryClass)
+                    .build();
         }
 
     }

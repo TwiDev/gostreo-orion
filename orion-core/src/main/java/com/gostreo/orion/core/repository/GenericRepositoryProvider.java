@@ -6,12 +6,12 @@ import com.gostreo.orion.api.repository.OrionRepositoryProvider;
 
 import java.lang.reflect.Proxy;
 
-public abstract class AbstractRepositoryProvider<Parent extends Orchestrator, Provider extends OrionRepository<Parent>>
+public class GenericRepositoryProvider<Parent extends Orchestrator, Provider extends OrionRepository<Parent>>
         implements OrionRepositoryProvider<Parent, Provider> {
 
     private final Class<Provider> classInterface;
 
-    public AbstractRepositoryProvider(Class<Provider> classInterface) {
+    public GenericRepositoryProvider(Class<Provider> classInterface) {
         this.classInterface = classInterface;
     }
 
@@ -22,5 +22,10 @@ public abstract class AbstractRepositoryProvider<Parent extends Orchestrator, Pr
                 this.getClass().getClassLoader(),
                 new Class[]{classInterface},
                 new RepositoryHandler<>(this));
+    }
+
+    @Override
+    public String getId() {
+        return "";
     }
 }

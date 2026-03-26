@@ -9,9 +9,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>orion-core</artifactId>
-    <name>orion Core</name>
-    <version>${global.version}</version>
+    <artifactId>orion-common</artifactId>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
@@ -24,17 +22,6 @@
             <groupId>com.gostreo</groupId>
             <artifactId>orion-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.gostreo</groupId>
-            <artifactId>orion-common</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>6.1.0-M1</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
