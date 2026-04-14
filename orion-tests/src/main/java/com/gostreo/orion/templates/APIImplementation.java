@@ -9,6 +9,7 @@ import com.gostreo.orion.api.messaging.OrionPriority;
 import com.gostreo.orion.api.repository.OrionRepository;
 import com.gostreo.orion.api.repository.annotations.*;
 import com.gostreo.orion.kafka.KafkaProvider;
+import reactor.core.publisher.Mono;
 
 public class APIImplementation {
 
@@ -16,31 +17,20 @@ public class APIImplementation {
         OrionProvider<LangchainWorkers> provider = new LangchainWorkers();
         KafkaConfiguration<LangchainWorkers> config = new KafkaConfiguration<>("localhost:9092");
 
-        Orion<LangchainWorkers> orion = new Orion.Builder<>(provider, config)
+        // Todo: move config part to orion provider should be more logical for start and stop of original orion instances
+
+        Orion<LangchainWorkers> orion = Orion.builder(provider, config)
+                // Preloaded repositories
                 .withRepository(TestRepository.class)
                 .limit(10)
                 .build();
 
-        orion.helloworld();
-
         TestRepository testRepository = orion.getRepositoryProvider(TestRepository.class).build();
-        ExchangeOrionJob orionJob = testRepository.sendMessage("hi");
 
-        orionJob.thenAccept(job -> {
-            System.out.println(job.getCurrentlyExecutingNode().getId());
-        });
-
-
-        TestRepository repository = new OrionRepository.Builder<>(orion, TestRepository.class)
+        TestRepository repository = OrionRepository.builder(orion, TestRepository.class)
                 .build();
 
-        try(ExchangeOrionJob job = repository.sendMessage("hello")) {
-            job.thenAccept(message -> {
-                System.out.println(message.getCurrentlyExecutingNode().getId());
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        repository.sendMessage("Hello").block();
 
         try {
             orion.close();
@@ -49,21 +39,14 @@ public class APIImplementation {
         }
     }
 
+    @Channel(channelName = "test-channel")
     interface TestRepository extends OrionRepository<LangchainWorkers> {
 
         @Post
-        @Channel(channelName = "test-channel")
         @Priority(priority = OrionPriority.HIGH)
-        @Payload
-        default OrionJob sendMessage() {
-            return sendMessage(null);
-        }
-
-        @Post
-        @Channel(channelName = "test-channel")
-        @Priority(priority = OrionPriority.HIGH)
-        @Payload
-        ExchangeOrionJob sendMessage(String message);
+        Mono<Void> sendMessage(
+                @Payload(param = "message") String message
+        );
 
     }
 

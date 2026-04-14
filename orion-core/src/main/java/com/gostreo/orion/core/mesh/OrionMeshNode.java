@@ -6,13 +6,19 @@ import io.rsocket.frame.decoder.PayloadDecoder;
 import io.rsocket.transport.netty.server.TcpServerTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
-public class OrionMeshNode {
+import java.io.Closeable;
+import java.io.IOException;
+
+public class OrionMeshNode implements Closeable {
 
     private final Logger logger = LoggerFactory.getLogger(OrionMeshNode.class);
     private final DistributedJobTracker tracker;
     private final String nodeId;
+
+    private Disposable disposable = null;
 
     public OrionMeshNode(String nodeId, DistributedJobTracker tracker) {
         this.nodeId = nodeId;
@@ -20,7 +26,7 @@ public class OrionMeshNode {
     }
 
     public void start(int port) {
-        RSocketServer.create()
+        this.disposable = RSocketServer.create()
                 .payloadDecoder(PayloadDecoder.ZERO_COPY)
                 // Logique de réception de messages entre orchestrateurs
                 .acceptor((setup, sendingRSocket) -> Mono.just(new RSocket() {
@@ -37,4 +43,10 @@ public class OrionMeshNode {
         logger.debug("Node {} listening on port {}", nodeId, port);
     }
 
+    @Override
+    public void close() throws IOException {
+        if(disposable != null) {
+            disposable.dispose();
+        }
+    }
 }

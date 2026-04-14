@@ -10,6 +10,12 @@ public interface OrionRepository<Parent extends Orchestrator> {
 
     Parent getOrchestrator();
 
+    static <Parent extends Orchestrator, Provider extends OrionRepository<Parent>>
+                Builder<Parent, Provider> builder(Orion<Parent> orion, Class<Provider> repositoryClass) {
+
+        return new Builder<>(orion, repositoryClass);
+    }
+
     class Builder<Parent extends Orchestrator, Provider extends OrionRepository<Parent>> {
 
         private final Orion<Parent> orion;

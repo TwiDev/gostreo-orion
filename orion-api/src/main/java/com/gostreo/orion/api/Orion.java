@@ -10,13 +10,17 @@ import java.util.UUID;
 
 public abstract class Orion<Parent extends Orchestrator> implements Closeable {
 
+    public static <Parent extends Orchestrator> Builder<Parent>
+                builder(OrionProvider<Parent> provider, OrchestratorConfig<Parent> config) {
+        return new Builder<>(provider, config);
+    }
+
     private final UUID instanceId = UUID.randomUUID();
     private final Object closeLock = new Object();
     private boolean closed = false;
 
-    public abstract void helloworld();
-
-    public abstract <Provider extends OrionRepository<Parent>> OrionRepositoryProvider<Parent, Provider> getRepositoryProvider(Class<Provider> repositoryClass);
+    public abstract <Provider extends OrionRepository<Parent>> OrionRepositoryProvider<Parent, Provider>
+                        getRepositoryProvider(Class<Provider> repositoryClass);
 
     @Override
     public synchronized void close() throws IOException {

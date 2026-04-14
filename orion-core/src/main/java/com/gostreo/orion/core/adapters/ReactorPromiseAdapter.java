@@ -1,6 +1,7 @@
 package com.gostreo.orion.core.adapters;
 
 import com.gostreo.orion.api.jobs.OrionPromise;
+import org.reactivestreams.Subscriber;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Consumer;
@@ -41,4 +42,8 @@ public record ReactorPromiseAdapter<T>(Mono<T> delegate) implements OrionPromise
         return this.delegate.block();
     }
 
+    @Override
+    public void subscribe(Subscriber<? super T> subscriber) {
+        this.delegate.subscribe(subscriber);
+    }
 }

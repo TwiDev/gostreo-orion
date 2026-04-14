@@ -1,12 +1,13 @@
 package com.gostreo.orion.core.mesh;
 
+import com.gostreo.orion.common.tracker.DistributedTracker;
 import reactor.core.publisher.Sinks;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DistributedJobTracker {
+public class DistributedJobTracker implements DistributedTracker {
 
     private final Map<UUID, Sinks.One<Object>> resultSinks = new ConcurrentHashMap<>();
     private final Map<UUID, Sinks.Many<Object>> updateSinks = new ConcurrentHashMap<>();
