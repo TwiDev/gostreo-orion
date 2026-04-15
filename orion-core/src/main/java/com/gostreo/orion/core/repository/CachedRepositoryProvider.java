@@ -5,7 +5,8 @@ import com.gostreo.orion.api.proto.OrionMessageProto;
 import com.gostreo.orion.api.repository.OrionRepository;
 import reactor.core.publisher.Mono;
 
-public class CachedRepositoryProvider<Parent extends Orchestrator, Provider extends OrionRepository<Parent>> extends GenericRepositoryProvider<Parent, Provider> {
+public class CachedRepositoryProvider<Parent extends Orchestrator, Provider extends OrionRepository<Parent>>
+        extends GenericRepositoryProvider<Parent, Provider> {
 
     private final GenericRepositoryProvider<Parent, Provider> provider;
 

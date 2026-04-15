@@ -8,22 +8,27 @@ import com.gostreo.orion.api.jobs.OrionJob;
 import com.gostreo.orion.api.messaging.OrionPriority;
 import com.gostreo.orion.api.repository.OrionRepository;
 import com.gostreo.orion.api.repository.annotations.*;
+import com.gostreo.orion.common.AbstractOrionProvider;
 import com.gostreo.orion.kafka.KafkaProvider;
 import reactor.core.publisher.Mono;
 
 public class APIImplementation {
 
     static void main() {
-        OrionProvider<LangchainWorkers> provider = new LangchainWorkers();
         KafkaConfiguration<LangchainWorkers> config = new KafkaConfiguration<>("localhost:9092");
 
-        // Todo: move config part to orion provider should be more logical for start and stop of original orion instances
+        OrionProvider<LangchainWorkers> provider = KafkaProvider.<LangchainWorkers>builder()
+                .withConfiguration(config)
+                .build();
 
-        Orion<LangchainWorkers> orion = Orion.builder(provider, config)
-                // Preloaded repositories
+        Orion<LangchainWorkers> orion = Orion.builder(provider)
                 .withRepository(TestRepository.class)
                 .limit(10)
                 .build();
+
+
+        // Todo: move config part to orion provider should be more logical for start and stop of original orion instances
+        // -> Done !
 
         TestRepository testRepository = orion.getRepositoryProvider(TestRepository.class).build();
 
@@ -42,7 +47,6 @@ public class APIImplementation {
     @Channel(channelName = "test-channel")
     interface TestRepository extends OrionRepository<LangchainWorkers> {
 
-        @Post
         @Priority(priority = OrionPriority.HIGH)
         Mono<Void> sendMessage(
                 @Payload(param = "message") String message

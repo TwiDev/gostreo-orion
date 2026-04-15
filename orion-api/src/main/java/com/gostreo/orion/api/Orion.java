@@ -11,8 +11,8 @@ import java.util.UUID;
 public abstract class Orion<Parent extends Orchestrator> implements Closeable {
 
     public static <Parent extends Orchestrator> Builder<Parent>
-                builder(OrionProvider<Parent> provider, OrchestratorConfig<Parent> config) {
-        return new Builder<>(provider, config);
+                builder(OrionProvider<Parent> provider) {
+        return new Builder<>(provider);
     }
 
     private final UUID instanceId = UUID.randomUUID();
@@ -41,13 +41,9 @@ public abstract class Orion<Parent extends Orchestrator> implements Closeable {
 
     public static final class Builder<Parent extends Orchestrator>  {
 
-        private final Parent parent;
-        private final OrchestratorConfig<Parent> config;
         private final OrionProvider<Parent> orion;
 
-        public Builder(OrionProvider<Parent> provider, OrchestratorConfig<Parent> config) {
-            this.parent = provider.getParent();
-            this.config = config;
+        public Builder(OrionProvider<Parent> provider) {
             this.orion = provider;
         }
 

@@ -3,10 +3,12 @@ package com.gostreo.orion.common;
 import com.gostreo.orion.api.Orchestrator;
 import com.gostreo.orion.api.Orion;
 import com.gostreo.orion.api.OrionProvider;
+import com.gostreo.orion.api.configs.OrchestratorConfig;
 
 import java.util.*;
 
-public abstract class AbstractOrionProvider<Parent extends Orchestrator> implements OrionProvider<Parent>, Orchestrator {
+public abstract class AbstractOrionProvider<Parent extends Orchestrator>
+        implements OrionProvider<Parent>, Orchestrator {
 
     // Auto-closeable queue instance that automatically removes closed Orion instances
     private final Set<Orion<Parent>> activeOrionInstances = Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<>()));
@@ -66,6 +68,27 @@ public abstract class AbstractOrionProvider<Parent extends Orchestrator> impleme
 
         if (shutdownFailure != null) {
             throw shutdownFailure;
+        }
+    }
+
+    public static <Parent extends Orchestrator> Builder<Parent> builder() {
+        return new Builder<>();
+    }
+
+    public static final class Builder<Parent extends Orchestrator> {
+
+        private OrchestratorConfig<Parent> config;
+
+        public Builder() {}
+
+        public Builder<Parent> withConfiguration(OrchestratorConfig<Parent> config) {
+            this.config = config;
+
+            return this;
+        }
+
+        public Parent build() {
+            return null;
         }
     }
 }
