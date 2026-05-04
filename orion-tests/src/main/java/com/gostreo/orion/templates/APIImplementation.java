@@ -9,6 +9,7 @@ import com.gostreo.orion.api.messaging.OrionPriority;
 import com.gostreo.orion.api.repository.OrionRepository;
 import com.gostreo.orion.api.repository.annotations.*;
 import com.gostreo.orion.common.AbstractOrionProvider;
+import com.gostreo.orion.core.CoreImplementation;
 import com.gostreo.orion.kafka.KafkaProvider;
 import reactor.core.publisher.Mono;
 
@@ -56,6 +57,14 @@ public class APIImplementation {
 
 
     static final class LangchainWorkers extends KafkaProvider<LangchainWorkers> {
+
+        private final CoreImplementation<LangchainWorkers> coreImplementation;
+
+        public LangchainWorkers() {
+            super(new CoreImplementation<>());
+
+            coreImplementation = new CoreImplementation<>();
+        }
 
         @Override
         public LangchainWorkers getParent() {
